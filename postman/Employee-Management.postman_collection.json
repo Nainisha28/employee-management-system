@@ -1,0 +1,130 @@
+{
+  "info": {
+    "name": "PeopleDesk Employee Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "employeeId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"admin\",\"password\":\"Admin@12345\"}"
+        },
+        "url": "{{baseUrl}}/api/auth/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const d = pm.response.json(); if (d.token) pm.collectionVariables.set('token', d.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "List / Search Employees",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/employees?search=Rahul&department=IT&page=0&size=10&sortBy=employeeCode&direction=asc"
+      }
+    },
+    {
+      "name": "Get Employee",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/employees/{{employeeId}}"
+      }
+    },
+    {
+      "name": "Create Employee (replace demo data as needed)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Demo Employee\",\n  \"email\": \"demo.employee@example.com\",\n  \"mobile\": \"9887766554\",\n  \"aadhaar\": \"123456789012\",\n  \"pan\": \"ABCDE1234F\",\n  \"dateOfBirth\": \"1998-01-15\",\n  \"gender\": \"Other\",\n  \"address\": \"Bhopal, Madhya Pradesh\",\n  \"department\": \"IT\",\n  \"roleName\": \"Software Engineer\",\n  \"joiningDate\": \"2025-01-15\",\n  \"annualSalary\": 550000,\n  \"status\": \"Active\"\n}"
+        },
+        "url": "{{baseUrl}}/api/employees"
+      }
+    },
+    {
+      "name": "Transfer Employee",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"newDepartment\":\"HR\",\"transferDate\":\"2026-10-29\",\"reason\":\"Team restructuring\"}"
+        },
+        "url": "{{baseUrl}}/api/employees/{{employeeId}}/transfer"
+      }
+    },
+    {
+      "name": "Transfer History",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/employees/{{employeeId}}/transfer-history"
+      }
+    }
+  ]
+}

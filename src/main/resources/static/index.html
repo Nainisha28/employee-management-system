@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>PeopleDesk | Employee Management</title>
+
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-wrap">
+
+        <form id="loginForm" class="login-card">
+
+            <div class="brand-mark">P</div>
+
+            <p class="eyebrow">
+                PEOPLEDESK · ADMIN PORTAL
+            </p>
+
+            <h1>Welcome back</h1>
+
+            <p class="muted">
+                Sign in to manage your team.
+            </p>
+
+            <label>
+                Username
+                <input id="username" value="admin" required autocomplete="username">
+            </label>
+
+            <label>
+                Password
+                <div class="password-wrapper">
+                    <input id="password" type="password" value="Admin@12345" required autocomplete="current-password">
+
+                    <button type="button" id="togglePassword" class="password-toggle">
+                        👁
+                    </button>
+                </div>
+            </label>
+
+            <button class="primary full">
+                Sign in
+            </button>
+
+            <p class="muted tiny">
+                Demo credentials are prefilled for local evaluation.
+            </p>
+
+            <p id="loginError" class="error"></p>
+
+        </form>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app" class="app hidden">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="brand-mark">P</div>
+
+                <div>
+                    <b>PeopleDesk</b>
+                    <small>PEOPLE OPERATIONS</small>
+                </div>
+
+            </div>
+
+            <div class="nav-label">
+                WORKSPACE
+            </div>
+
+            <button class="nav active" data-page="employees">
+                ▦ &nbsp; Employees
+            </button>
+
+            <button class="nav" data-page="transfers">
+                ⇄ &nbsp; Department transfer
+            </button>
+
+            <!-- Sidebar User Information -->
+            <div class="sidebar-bottom">
+
+                <div class="avatar">AD</div>
+
+                <div class="user-meta">
+                    <b>Administrator</b>
+                    <small>System admin</small>
+                </div>
+
+                <button id="logoutBtn" class="logout" title="Sign out">
+                    ↪
+                </button>
+
+            </div>
+
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+
+            <!-- Header -->
+            <header class="topbar">
+
+                <div>
+
+                    <div class="breadcrumb">
+                        Workspace
+                        <span>/</span>
+                        <b id="crumb">Employees</b>
+                    </div>
+
+                    <h1 id="pageTitle">
+                        Employee directory
+                    </h1>
+
+                </div>
+
+                <div class="top-actions">
+
+                    <span class="live-dot">
+                        ● System online
+                    </span>
+
+                    <button class="primary" id="addBtn">
+                        ＋ Add employee
+                    </button>
+
+                </div>
+
+            </header>
+
+            <!-- Employee Directory Page -->
+            <section id="employeePage">
+
+                <!-- Statistics Cards -->
+                <div class="stats">
+
+                    <div class="stat-card">
+
+                        <span>Total employees</span>
+
+                        <div>
+                            <strong id="totalStat">—</strong>
+                            <span class="stat-icon purple">♙</span>
+                        </div>
+
+                        <small>Matching your current view</small>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <span>Active employees</span>
+
+                        <div>
+                            <strong id="activeStat">—</strong>
+                            <span class="stat-icon green">✓</span>
+                        </div>
+
+                        <small>Currently active</small>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <span>Departments</span>
+
+                        <div>
+                            <strong>5</strong>
+                            <span class="stat-icon blue">⌘</span>
+                        </div>
+
+                        <small>
+                            IT, HR, Finance, Sales, Admin
+                        </small>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <span>Average annual salary</span>
+
+                        <div>
+                            <strong id="avgStat">—</strong>
+                            <span class="stat-icon orange">₹</span>
+                        </div>
+
+                        <small>Across loaded records</small>
+
+                    </div>
+
+                </div>
+
+                <!-- Employee Management Panel -->
+                <div class="panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+                            <h2>All employees</h2>
+
+                            <p>
+                                Search, filter and manage your workforce.
+                            </p>
+                        </div>
+
+                        <button class="outline" id="resetBtn">
+                            ↺ Reset filters
+                        </button>
+
+                    </div>
+
+                    <!-- Search and Basic Filters -->
+                    <div class="search-row">
+
+                        <div class="searchbox">
+
+                            <span>⌕</span>
+
+                            <input id="search" placeholder="Search name, code, email, mobile, address…">
+
+                        </div>
+
+                        <select id="departmentFilter">
+                            <option value="">All departments</option>
+                            <option>IT</option>
+                            <option>HR</option>
+                            <option>Finance</option>
+                            <option>Sales</option>
+                            <option>Admin</option>
+                        </select>
+
+                        <select id="roleFilter">
+                            <option value="">All roles</option>
+                            <option>Software Engineer</option>
+                            <option>HR Executive</option>
+                            <option>Accountant</option>
+                            <option>Sales Executive</option>
+                            <option>Administrator</option>
+                            <option>Team Lead</option>
+                        </select>
+
+                        <select id="statusFilter">
+                            <option value="">All statuses</option>
+                            <option>Active</option>
+                            <option>Inactive</option>
+                        </select>
+
+                        <button id="moreFilters" class="outline">
+                            ⚙ Filters
+                        </button>
+
+                    </div>
+
+                    <!-- Advanced Filters -->
+                    <div id="advancedFilters" class="advanced hidden">
+
+                        <select id="genderFilter">
+                            <option value="">All genders</option>
+                            <option>Female</option>
+                            <option>Male</option>
+                            <option>Other</option>
+                        </select>
+
+                        <label>
+                            Joining from
+                            <input type="date" id="joiningFrom">
+                        </label>
+
+                        <label>
+                            Joining to
+                            <input type="date" id="joiningTo">
+                        </label>
+
+                        <select id="salaryFilter">
+                            <option value="">Any salary</option>
+                            <option value="100000,300000">₹1–3 LPA</option>
+                            <option value="300000,500000">₹3–5 LPA</option>
+                            <option value="500000,1000000">₹5–10 LPA</option>
+                            <option value="1000000,">₹10+ LPA</option>
+                            <option value="custom">Custom range</option>
+                        </select>
+
+                        <input id="minSalary" class="hidden" type="number" placeholder="Min salary ₹">
+
+                        <input id="maxSalary" class="hidden" type="number" placeholder="Max salary ₹">
+
+                    </div>
+
+                    <!-- Employee Table -->
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+
+                                    <th>
+                                        <button class="sort" data-sort="employeeCode">
+                                            EMPLOYEE ↕
+                                        </button>
+                                    </th>
+
+                                    <th>DEPARTMENT</th>
+
+                                    <th>
+                                        <button class="sort" data-sort="roleName">
+                                            ROLE ↕
+                                        </button>
+                                    </th>
+
+                                    <th>CONTACT</th>
+
+                                    <th>
+                                        <button class="sort" data-sort="annualSalary">
+                                            ANNUAL SALARY ↕
+                                        </button>
+                                    </th>
+
+                                    <th>STATUS</th>
+                                    <th>ACTIONS</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody id="employeeRows">
+
+                                <tr>
+                                    <td colspan="7" class="empty">
+                                        Loading employees…
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- Table Footer and Pagination -->
+                    <div class="table-footer">
+
+                        <span id="resultCount">
+                            0 employees
+                        </span>
+
+                        <div class="pagination">
+
+                            <label>
+                                Rows
+
+                                <select id="pageSize">
+                                    <option>5</option>
+                                    <option selected>10</option>
+                                    <option>20</option>
+                                </select>
+                            </label>
+
+                            <button id="prevPage" class="page-btn">
+                                ‹
+                            </button>
+
+                            <span id="pageLabel">1 / 1</span>
+
+                            <button id="nextPage" class="page-btn">
+                                ›
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Department Transfer Page -->
+            <section id="transferPage" class="panel hidden">
+
+                <div class="panel-heading">
+
+                    <div>
+                        <h2>Department transfer</h2>
+
+                        <p>
+                            Move an employee and keep a complete transfer history.
+                        </p>
+                    </div>
+
+                </div>
+
+                <form id="transferForm" class="form-grid">
+
+                    <label>
+                        Employee
+
+                        <select id="transferEmployee" required>
+                            <option value="">Choose employee</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        New department
+
+                        <select id="newDepartment" required>
+                            <option value="">Choose department</option>
+                            <option>IT</option>
+                            <option>HR</option>
+                            <option>Finance</option>
+                            <option>Sales</option>
+                            <option>Admin</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Transfer date
+
+                        <input type="date" id="transferDate" required>
+                    </label>
+
+                    <label class="span-2">
+                        Reason
+
+                        <textarea id="transferReason" rows="3" required placeholder="Reason for transfer"></textarea>
+                    </label>
+
+                    <div class="span-2">
+
+                        <button class="primary">
+                            Confirm transfer
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <div id="transferResult"></div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Add / Edit Employee Modal -->
+    <div id="employeeModal" class="modal hidden">
+
+        <div class="modal-card">
+
+            <div class="modal-head">
+
+                <div>
+                    <p class="eyebrow">EMPLOYEE RECORD</p>
+                    <h2 id="modalTitle">Add employee</h2>
+                </div>
+
+                <button class="close" id="closeModal">
+                    ×
+                </button>
+
+            </div>
+
+            <form id="employeeForm">
+
+                <input id="employeeId" type="hidden">
+
+                <div class="form-grid">
+
+                    <label>
+                        Full name *
+                        <input id="fullName" required pattern="[A-Za-z ]{2,100}" title="Letters and spaces only">
+                    </label>
+
+                    <label>
+                        Email address *
+                        <input id="email" type="email" required>
+                    </label>
+
+                    <label>
+                        Mobile number *
+                        <input id="mobile" inputmode="numeric" maxlength="10" pattern="[0-9]{10}" required>
+                    </label>
+
+                    <label>
+                        Aadhaar number *
+                        <input id="aadhaar" inputmode="numeric" maxlength="14" placeholder="XXXX-XXXX-XXXX" required>
+                    </label>
+
+                    <label>
+                        PAN number *
+                        <input id="pan" maxlength="10" pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]" required
+                            placeholder="ABCDE1234F">
+                    </label>
+
+                    <label>
+                        Date of birth *
+                        <input id="dateOfBirth" type="date" required>
+                    </label>
+
+                    <label>
+                        Gender *
+
+                        <select id="gender" required>
+                            <option value="">Select</option>
+                            <option>Female</option>
+                            <option>Male</option>
+                            <option>Other</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Department *
+
+                        <select id="department" required>
+                            <option value="">Select</option>
+                            <option>IT</option>
+                            <option>HR</option>
+                            <option>Finance</option>
+                            <option>Sales</option>
+                            <option>Admin</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Role / designation *
+
+                        <select id="roleName" required>
+                            <option value="">Select</option>
+                            <option>Software Engineer</option>
+                            <option>HR Executive</option>
+                            <option>Accountant</option>
+                            <option>Sales Executive</option>
+                            <option>Administrator</option>
+                            <option>Team Lead</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Joining date *
+                        <input id="joiningDate" type="date" required>
+                    </label>
+
+                    <label>
+                        Annual salary (₹) *
+
+                        <input id="annualSalary" type="number" min="1" step="0.01" required>
+                    </label>
+
+                    <label>
+                        Status *
+
+                        <select id="status" required>
+                            <option>Active</option>
+                            <option>Inactive</option>
+                        </select>
+                    </label>
+
+                    <label class="span-2">
+                        Address *
+
+                        <textarea id="address" rows="2" required></textarea>
+                    </label>
+
+                </div>
+
+                <p class="muted tiny">
+                    Employee code is generated by the server from the selected department.
+                </p>
+
+                <p id="formError" class="error"></p>
+
+                <div class="modal-actions">
+
+                    <button type="button" class="outline" id="cancelModal">
+                        Cancel
+                    </button>
+
+                    <button class="primary">
+                        Save employee
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Employee Details Modal -->
+    <div id="detailsModal" class="modal hidden">
+
+        <div class="modal-card">
+
+            <div class="modal-head">
+
+                <div>
+                    <p class="eyebrow">
+                        PERSONAL & EMPLOYMENT DETAILS
+                    </p>
+
+                    <h2 id="detailsTitle">
+                        Employee details
+                    </h2>
+                </div>
+
+                <button class="close" id="closeDetails">
+                    ×
+                </button>
+
+            </div>
+
+            <div id="detailsContent" class="details-grid"></div>
+
+            <div class="modal-actions">
+
+                <button class="outline" id="detailsDone">
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- Application JavaScript -->
+    <script src="/app.js"></script>
+
+</body>
+
+</html>
