@@ -255,3 +255,8 @@ See `TESTING.md` for the manual test script.
 - Employee code generation does not lock the counter row, so two simultaneous requests in one department could collide.
 - No automated tests; testing is manual (see `TESTING.md`).
 
+
+<img width="1919" height="960" alt="Screenshot 2026-10-31 130534" src="https://github.com/user-attachments/assets/b3eaa09a-b07e-4aa1-af63-53871224fa57" />
+<img width="1891" height="912" alt="Screenshot 2026-10-31 130442" src="https://github.com/user-attachments/assets/ecf73761-08d3-4a46-b9f1-e99e4466fe52" />
+<img width="1919" height="909" alt="Screenshot 2026-10-31 130520" src="https://github.com/user-attachments/assets/9fc0ec38-e1e3-468c-ac61-7992edc56ae0" />
+
